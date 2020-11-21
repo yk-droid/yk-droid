@@ -1,0 +1,19 @@
+bool has_cycle(SinglyLinkedListNode* head) {
+if(head!=0)
+{     
+    SinglyLinkedListNode* temp=head, *a[50];
+    int k=0, i=0;
+    while(temp!=0){
+        a[k] = temp;
+        for(i=0; i<k; i++)
+        {
+            if(a[i] == temp->next)
+                return 1;
+        }
+        temp = temp->next;
+        k++;
+    }
+    return 0;
+}
+return 0;
+}
