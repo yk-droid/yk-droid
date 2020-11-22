@@ -1,0 +1,116 @@
+Rearrange array in alternating positive & negative elements: 
+
+O(N) and O(1) extra space without order(Self written code):
+
+int i=0, j=n-1;
+while(i<j)
+{
+	if(i%2==0)
+	{
+		if(a[i]<0)
+			i++;
+		else{
+			swap(a[i], a[j]);
+			j--;
+	     	}
+	}
+        else
+	{
+		if(a[i]>=0)
+			i++;
+		else
+		{
+			swap(a[i], a[j]);
+			j--;
+		}
+	}
+}
+
+Another Method:
+void rearrange(int arr[], int n)
+{
+    int i = -1, j = n;
+ 
+    // shift all negative values to the end
+    while (i < j)
+    {
+        while(i <= n - 1 and arr[i] > 0)
+            i += 1;
+        while (j >= 0 and arr[j] < 0)
+            j -= 1;
+        if (i < j)
+            swap(arr[i], arr[j]);
+    }
+ 
+    // i has index of leftmost 
+    // negative element
+    if (i == 0 || i == n)
+        return;
+ 
+    // start with first positive 
+    // element at index 0
+ 
+    // Rearrange array in alternating 
+    // positive &
+    // negative items
+    int k = 0;
+    while (k < n && i < n)
+    {
+        // swap next positive 
+        // element at even position
+        // from next negative element.
+        swap(arr[k], arr[i]);
+        i = i + 1;
+        k = k + 2;
+    }
+}
+
+
+With order:(Only O(N^2) and O(1))
+
+void rearrange(int arr[], int n) 
+{ 
+    int outofplace = -1; 
+  
+    for (int index = 0; index < n; index ++) 
+    { 
+        if (outofplace >= 0) 
+        { 
+            // find the item which must be moved into the out-of-place 
+            // entry if out-of-place entry is positive and current 
+            // entry is negative OR if out-of-place entry is negative 
+            // and current entry is negative then right rotate 
+            // 
+            // [...-3, -4, -5, 6...] -->   [...6, -3, -4, -5...] 
+            //      ^                          ^ 
+            //      |                          | 
+            //     outofplace      -->      outofplace 
+            // 
+            if (((arr[index] >= 0) && (arr[outofplace] < 0)) 
+                || ((arr[index] < 0) && (arr[outofplace] >= 0))) 
+            { 
+                rightrotate(arr, n, outofplace, index); 
+  
+                // the new out-of-place entry is now 2 steps ahead 
+                if (index - outofplace >= 2) 
+                    outofplace = outofplace + 2; 
+                else
+                    outofplace = -1; 
+            } 
+        } 
+  
+  
+        // if no entry has been flagged out-of-place 
+        if (outofplace == -1) 
+        { 
+            // check if current entry is out-of-place 
+            if (((arr[index] >= 0) && (!(index & 0x01))) 
+                || ((arr[index] < 0) && (index & 0x01))) 
+            { 
+                outofplace = index; 
+            } 
+        } 
+    } 
+} 
+
+
